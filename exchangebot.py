@@ -2,7 +2,7 @@ import telebot
 from extensions import VALUES
 
 with open("config.ini") as f:
-    TOKEN = f.readline()[9:].replace("\n", "")
+    TOKEN = f.readline()[8:].replace("\n", "")
     print(TOKEN)
 
 bot = telebot.TeleBot(TOKEN)
@@ -19,8 +19,8 @@ def values(message: telebot.types.Message):
     values_ = ''
     for key in VALUES.keys():
         values_ += f'{key}\n'
-    response = f'Доступные валюты:\n{values_}\n\
-        (доллар = доллар США,\n\
+    response = f'Доступные валюты:\n{values_}\n'
+    response += '(доллар = доллар США,\n\
         вона = южнокорейская вона,\n\
         фунт = британский фунт,\n\
         франк = швейцарский франк,\n\
