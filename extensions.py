@@ -23,9 +23,20 @@ class APIException(Exception):
 class Exchange:
     @staticmethod
     def get_price(fValue: str, tValue: str, amount: str):
-        fValue = VALUES[fValue]
-        tValue = VALUES[tValue]
-        amount = int(amount)
+        try:
+            fValue = VALUES[fValue]
+            tValue = VALUES[tValue]
+            amount = int(amount)
+
+            if fValue == tValue:
+                raise APIException('Нельзя конвертировать одинаковую валюту')
+
+        except APIException as ex:
+            return f'{ex}'
+        except KeyError:
+            return 'Данная валюта недоступна'
+        except ValueError:
+            return 'Количество валюты должен быть целым числом и больше нуля'
 
         request = requests.get(f'https://api.exchangeratesapi.io/latest?base={fValue}&symbols={tValue},{fValue}')
-        return f'{amount * json.loads(request.content["rates"])[tValue]: .2f}'
+        return f'{amount * json.loads(request.content)["rates"][tValue]: .2f}'
